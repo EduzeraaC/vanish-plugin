@@ -10,8 +10,8 @@ import java.util.List;
 @Getter
 public class Manager {
 
-    private final List<Player> vanishPlayers;
-    private final List<Player> playersHidingPlayers;
+    private final List<String> vanishPlayers;
+    private final List<String> playersHidingPlayers;
 
     public Manager() {
         this.vanishPlayers = new ArrayList<>();
@@ -19,7 +19,7 @@ public class Manager {
     }
 
     public void addVanishPlayer(Player player) {
-        vanishPlayers.add(player);
+        vanishPlayers.add(player.getName());
         player.sendMessage("§aVocê ativou o vanish.");
         for (Player allPlayer : Bukkit.getOnlinePlayers()) {
             allPlayer.hidePlayer(player);
@@ -27,7 +27,7 @@ public class Manager {
     }
 
     public void removeVanishPlayer(Player player) {
-        vanishPlayers.remove(player);
+        vanishPlayers.remove(player.getName());
         player.sendMessage("§cVocê desativou o vanish.");
         for (Player allPlayer : Bukkit.getOnlinePlayers()) {
             allPlayer.showPlayer(player);
@@ -35,11 +35,11 @@ public class Manager {
     }
 
     public boolean playerVanished(Player player) {
-        return vanishPlayers.contains(player);
+        return vanishPlayers.contains(player.getName());
     }
 
     public void addPlayerToHidingPlayers(Player player) {
-        playersHidingPlayers.add(player);
+        playersHidingPlayers.add(player.getName());
         player.sendMessage("§eVocê escondeu todos os jogadores.");
         for (Player allPlayer : Bukkit.getOnlinePlayers()) {
             player.hidePlayer(allPlayer);
@@ -47,7 +47,7 @@ public class Manager {
     }
 
     public void removePlayerToHidingPlayers(Player player) {
-        playersHidingPlayers.remove(player);
+        playersHidingPlayers.remove(player.getName());
         player.sendMessage("§aVocê está vendo todos os jogadores.");
         for (Player allPlayer : Bukkit.getOnlinePlayers()) {
             if (!playerVanished(allPlayer)) {
@@ -57,13 +57,23 @@ public class Manager {
     }
 
     public boolean playerHidingPlayers(Player player) {
-        return playersHidingPlayers.contains(player);
+        return playersHidingPlayers.contains(player.getName());
     }
 
     public void onEnter(Player player) {
         if (getVanishPlayers().isEmpty()) return;
-        for (Player vanished : getVanishPlayers()) {
+        for (String vanishedName : getVanishPlayers()) {
+            Player vanished = Bukkit.getPlayer(vanishedName);
             player.hidePlayer(vanished);
+        }
+    }
+
+    public void onQuit(Player player) {
+        if (playerVanished(player)) {
+            removeVanishPlayer(player);
+        }
+        if (playerHidingPlayers(player)) {
+            removePlayerToHidingPlayers(player);
         }
     }
 }

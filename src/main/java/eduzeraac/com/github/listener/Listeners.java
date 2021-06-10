@@ -4,6 +4,7 @@ import eduzeraac.com.github.manager.Manager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Listeners implements Listener {
 
@@ -16,5 +17,10 @@ public class Listeners implements Listener {
     @EventHandler
     private void onEnter(PlayerJoinEvent event) {
         manager.onEnter(event.getPlayer());
+    }
+
+    @EventHandler
+    private void onDisable(PlayerQuitEvent event) {
+        manager.onQuit(event.getPlayer());
     }
 }
