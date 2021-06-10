@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Vanish">
+    <output-path>$USER_HOME$/Plugins</output-path>
+    <root id="archive" name="Vanish.jar">
+      <element id="module-output" name="Vanish" />
+    </root>
+  </artifact>
+</component>
