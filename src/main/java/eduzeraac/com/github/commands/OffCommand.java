@@ -3,24 +3,24 @@ package eduzeraac.com.github.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
-import eduzeraac.com.github.manager.Manager;
+import eduzeraac.com.github.service.Service;
 import org.bukkit.entity.Player;
 
 @CommandAlias("off")
 public class OffCommand extends BaseCommand {
 
-    private final Manager manager;
+    private final Service service;
 
-    public OffCommand(Manager manager) {
-        this.manager = manager;
+    public OffCommand(Service service) {
+        this.service = service;
     }
 
     @Default
     private void onDesactivePlayers(Player player) {
-        if (!manager.playerHidingPlayers(player)) {
+        if (!service.playerHidingPlayers(player)) {
             player.sendMessage("§cVocê já está vendo todos os jogadores.");
             return;
         }
-        manager.removePlayerToHidingPlayers(player);
+        service.removePlayerToHidingPlayers(player);
     }
 }
